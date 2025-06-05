@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+@import url(https://fonts.googleapis.com/css?family=Roboto:regular,500,600,700,800,900);
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #ffffff;
+}
+
+.container {
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+a,
+button {
+  cursor: pointer;
+  transition: 0.2s;
+}
+svg {
+  transition: 0.2s;
+}
