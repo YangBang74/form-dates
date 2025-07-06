@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useAccountsStore } from '@/stores/accountStore'
+import AccountRow from '@/components/FormInput.vue'
+import { Icon } from '@iconify/vue'
+
+const accountsStore = useAccountsStore()
+
+const rawAccounts = computed(() => accountsStore.rawAccounts)
+
+function onAdd() {
+  accountsStore.addAccount()
+}
+</script>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
 <template>
   <div class="max-w-4xl mx-auto p-4">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-start mb-6 gap-3">
@@ -67,28 +91,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useAccountsStore } from '@/stores/accountStore'
-import AccountRow from '@/components/FormInput.vue'
-import { Icon } from '@iconify/vue'
-
-const accountsStore = useAccountsStore()
-
-const rawAccounts = computed(() => accountsStore.rawAccounts)
-
-function onAdd() {
-  accountsStore.addAccount()
-}
-</script>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

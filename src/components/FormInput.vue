@@ -1,100 +1,3 @@
-<!-- src/components/AccountRow.vue -->
-<template>
-  <tr class="hover:bg-gray-50 transition-colors">
-    <td class="px-3 py-2 align-top">
-      <div
-        class="flex flex-wrap items-center min-h-[2.5rem] px-2 py-1 border rounded-md focus-within:ring-1 focus-within:ring-blue-300"
-        :class="errors.labels ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'"
-        @click="focusTagInput"
-      >
-        <template v-for="(tag, idx) in tags" :key="`${props.rawAccount.id}-tag-${idx}`">
-          <span class="mr-1 mb-1 text-sm">
-            {{ tag }}
-            <span class="ml-0.5 cursor-pointer text-gray-600 hover:text-red-500"> ; </span>
-          </span>
-        </template>
-        <input
-          ref="tagInputRef"
-          v-model="newTag"
-          @keydown.enter.prevent="handleEnter"
-          @keydown.backspace="handleBackspace"
-          @input="onTagInput"
-          @blur="onTagBlur"
-          class="flex-1 min-w-[5rem] border-none focus:outline-none text-sm"
-          type="text"
-        />
-      </div>
-    </td>
-    <td class="px-3 py-2 whitespace-nowrap">
-      <select
-        v-model="typeValue"
-        @change="onTypeChange"
-        :class="[
-          'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
-          errors.type ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
-        ]"
-      >
-        <option value="Локальная">Локальная</option>
-        <option value="LDAP">LDAP</option>
-      </select>
-    </td>
-    <template v-if="typeValue === 'LDAP'">
-      <td class="px-3 py-2 whitespace-nowrap" :class="['text-sm px-2 rounded-md ']" colspan="2">
-        <input
-          v-model="loginValue"
-          @blur="() => validateAndSaveField('login')"
-          :class="[
-            'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
-            errors.login ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
-          ]"
-          type="text"
-        />
-      </td>
-    </template>
-    <template v-else>
-      <td class="px-3 py-2 whitespace-nowrap">
-        <input
-          v-model="loginValue"
-          @blur="() => validateAndSaveField('login')"
-          :class="[
-            'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
-            errors.login ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
-          ]"
-          type="text"
-        />
-      </td>
-
-      <td class="px-3 py-2 relative whitespace-nowrap">
-        <input
-          v-model="passwordValue"
-          @blur="() => validateAndSaveField('password')"
-          :type="showPassword ? 'text' : 'password'"
-          :class="[
-            'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
-            errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
-          ]"
-        />
-        <button
-          type="button"
-          @click="toggleShowPassword"
-          class="absolute inset-y-0 right-5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
-        >
-          <Icon :icon="showPassword ? 'akar-icons:eye' : 'akar-icons:eye-closed'" class="w-5 h-5" />
-        </button>
-      </td>
-    </template>
-    <td class="px-3 py-2 whitespace-nowrap text-center">
-      <button
-        @click="onRemove"
-        class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-red-50 transition-colors focus:outline-none"
-        type="button"
-      >
-        <Icon icon="ic:round-delete-outline" class="w-5 h-5 text-red-500 hover:text-red-700" />
-      </button>
-    </td>
-  </tr>
-</template>
-
 <script setup lang="ts">
 import { ref, reactive, watch, nextTick, defineExpose } from 'vue'
 import { useAccountsStore } from '@/stores/accountStore'
@@ -283,3 +186,99 @@ function toggleShowPassword() {
   showPassword.value = !showPassword.value
 }
 </script>
+
+<template>
+  <tr class="hover:bg-gray-50 transition-colors">
+    <td class="px-3 py-2 align-top">
+      <div
+        class="flex flex-wrap items-center min-h-[2.5rem] px-2 py-1 border rounded-md focus-within:ring-1 focus-within:ring-blue-300"
+        :class="errors.labels ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'"
+        @click="focusTagInput"
+      >
+        <template v-for="(tag, idx) in tags" :key="`${props.rawAccount.id}-tag-${idx}`">
+          <span class="mr-1 mb-1 text-sm">
+            {{ tag }}
+            <span class="ml-0.5 cursor-pointer text-gray-600 hover:text-red-500"> ; </span>
+          </span>
+        </template>
+        <input
+          ref="tagInputRef"
+          v-model="newTag"
+          @keydown.enter.prevent="handleEnter"
+          @keydown.backspace="handleBackspace"
+          @input="onTagInput"
+          @blur="onTagBlur"
+          class="flex-1 min-w-[5rem] border-none focus:outline-none text-sm"
+          type="text"
+        />
+      </div>
+    </td>
+    <td class="px-3 py-2 whitespace-nowrap">
+      <select
+        v-model="typeValue"
+        @change="onTypeChange"
+        :class="[
+          'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
+          errors.type ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
+        ]"
+      >
+        <option value="Локальная">Локальная</option>
+        <option value="LDAP">LDAP</option>
+      </select>
+    </td>
+    <template v-if="typeValue === 'LDAP'">
+      <td class="px-3 py-2 whitespace-nowrap" :class="['text-sm px-2 rounded-md ']" colspan="2">
+        <input
+          v-model="loginValue"
+          @blur="() => validateAndSaveField('login')"
+          :class="[
+            'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
+            errors.login ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
+          ]"
+          type="text"
+        />
+      </td>
+    </template>
+    <template v-else>
+      <td class="px-3 py-2 whitespace-nowrap">
+        <input
+          v-model="loginValue"
+          @blur="() => validateAndSaveField('login')"
+          :class="[
+            'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
+            errors.login ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
+          ]"
+          type="text"
+        />
+      </td>
+
+      <td class="px-3 py-2 relative whitespace-nowrap">
+        <input
+          v-model="passwordValue"
+          @blur="() => validateAndSaveField('password')"
+          :type="showPassword ? 'text' : 'password'"
+          :class="[
+            'w-full px-2 py-1 border rounded-md focus:outline-none text-sm',
+            errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white',
+          ]"
+        />
+        <button
+          type="button"
+          @click="toggleShowPassword"
+          class="absolute inset-y-0 right-5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+        >
+          <Icon :icon="showPassword ? 'akar-icons:eye' : 'akar-icons:eye-closed'" class="w-5 h-5" />
+        </button>
+      </td>
+    </template>
+    <td class="px-3 py-2 whitespace-nowrap text-center">
+      <button
+        @click="onRemove"
+        class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-red-50 transition-colors focus:outline-none"
+        type="button"
+      >
+        <Icon icon="ic:round-delete-outline" class="w-5 h-5 text-red-500 hover:text-red-700" />
+      </button>
+    </td>
+  </tr>
+</template>
